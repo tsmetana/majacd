@@ -1,0 +1,53 @@
+Summary: Simple audio CD player
+Name: majacd
+Version: @VERSION@
+Release: 1%{?dist}
+License: GPLv2+
+Group: Applications/Multimedia
+Source: %{name}-%{version}.tar.bz2
+URL: http://www.smetana.name/majacd
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRequires: kernel-headers
+
+%description
+Maja's CD player is a simple audio CD player. It can't play digitally so you
+have to have your CD drive connected to the soundcard.
+
+It comes with GTK+ frontend.
+
+%package gui
+Summary: A GTK+ GUI for the majacd application
+Group: Applications/Multimedia
+BuildRequires: gtk2-devel
+Requires: %{name} = %{version}-%{release}
+
+%description gui
+A GTK+ GUI for the majacd application.
+
+%prep
+%setup -q
+
+%build
+%configure
+make %{?_smp_flags}
+
+%install
+rm -rf $RPM_BUILD_ROOT
+make install DESTDIR=$RPM_BUILD_ROOT INSTALL="install -p"
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%files
+%defattr(-,root,root)
+%doc AUTHORS COPYING ChangeLog NEWS README
+%{_bindir}/majacd
+%attr(0644,root,root) %{_mandir}/man1/*
+
+%files gui
+%defattr(-,root,root)
+%{_bindir}/majacd-gui
+
+%changelog
+* Mon Jun 09 2008 Tomas Smetana <tsmetana@redhat.com>
+- spec file template

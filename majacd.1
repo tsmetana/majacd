@@ -1,0 +1,86 @@
+.\"             -*-Nroff-*-
+.\"  This page Copyright (C) 2008 Tomas Smetana <t.smetana@gmail.com>.
+.\"  Freely distributable under the terms of the GPL version 2 or above
+.TH MAJACD 1 "18 Mar 2008 " "Linux"
+.SH NAME
+majacd \- console CD player
+.SH SYNOPSIS
+.BR "majacd " " [" \-V "] ["\-s "] ["\-n "] [" \-d " <device>] ["
+.I <command>
+.RB "]"
+.SH DESCRIPTION
+\fBmajacd\fP is a simple console CD player application that allows for
+playing CD audio disks on any device connected to the sound card.  It cannot
+"grab" the tracks (aka digital playback).  If you do not have the CD device audio
+output connected to the sound card you need some other application.
+
+Without the \fB\-n\fP or \fB\-d\fP options specified the application attempts to
+detect the device automatically and sends the specified command to the first
+device containing a CD audio disc detected.  Upon successful command completion
+the application exits unless it was started in the slave mode.
+.SS Options
+.TP
+\fB-V\fP
+display the version number and exit
+.TP
+\fB-s\fP
+turn on the slave mode
+.TP
+\fB-d <device>\fP
+select the audio device
+.TP
+\fB-n\fP
+turn off the device autodetection.
+.SH COMMANDS
+Note that certain commands (\fBquit\fP, \fBdevice\fP) are useful in the slave
+mode only.
+.TP
+\fBplay\fP
+start playback
+.TP
+\fBpause\fP
+pause playback
+.TP
+\fBtoggle\fP
+toggle play/pause
+.TP
+\fBstop\fP
+stop playback
+.TP
+\fBnext\fP
+skip to the next track
+.TP
+\fBprev\fP
+skip to the previous track
+.TP
+\fBstatus\fP
+print current device status (playing, stopped..., track number and current track
+position and length)
+.TP
+\fBinfo\fP
+print current disc information (number of tracks, playing times)
+.TP
+\fBscan\fP
+scans devices and reports their usability (audio disc presence)
+.TP
+\fBdevice\fP
+with no argument prints available CD devices; the optional argument
+specifies the device to use
+.TP
+\fBvolume\fP
+with no argument prints out the current volume setting; if a numeric argument
+is present the volume is adjusted to the value; if the number is prepened with
+\fB+\fP or \fB-\fP the change is relative to the current setting
+.TP
+\fBquit\fP
+quits the application.
+.SH FILES
+.ta
+.IR /proc/sys/dev/cdrom/info " \-\- available CD devices"
+.fi
+
+.SH "SEE ALSO"
+.BR eject (1),
+
+.SH AUTHORS
+Tomas Smetana <t.smetana@gmail.com>.
