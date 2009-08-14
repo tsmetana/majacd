@@ -160,10 +160,8 @@ int dev_close(void)
 	dev.fd = -1;
 	dev.track_num = 0;
 	dev.is_audio = 0;
-	if (dev.track_list) {
-		free(dev.track_list);
-		dev.track_list = NULL;
-	}
+	free(dev.track_list);
+	dev.track_list = NULL;
 	return ret;
 }
 
