@@ -1,9 +1,9 @@
 .\"             -*-Nroff-*-
-.\"  This page Copyright (C) 2008 Tomas Smetana <t.smetana@gmail.com>.
+.\"  This page Copyright (C) 2009 Tomas Smetana <tsmetana@users.sourceforge.net>.
 .\"  Freely distributable under the terms of the GPL version 2 or above
-.TH MAJACD 1 "18 Mar 2008 " "Linux"
+.TH MAJACD 1 "26 Aug 2009 " "Linux"
 .SH NAME
-majacd \- console CD player
+majacd \- Maja's console CD player
 .SH SYNOPSIS
 .BR "majacd " " [" \-V "] ["\-s "] ["\-n "] [" \-d " <device>] ["
 .I <command>
@@ -11,7 +11,7 @@ majacd \- console CD player
 .SH DESCRIPTION
 \fBmajacd\fP is a simple console CD player application that allows for
 playing CD audio disks on any device connected to the sound card.  It cannot
-"grab" the tracks (aka digital playback).  If you do not have the CD device audio
+"grab" the tracks (digital playback).  If you do not have the CD device audio
 output connected to the sound card you need some other application.
 
 Without the \fB\-n\fP or \fB\-d\fP options specified the application attempts to
@@ -20,16 +20,16 @@ device containing a CD audio disc detected.  Upon successful command completion
 the application exits unless it was started in the slave mode.
 .SS Options
 .TP
-\fB-V\fP
+\fB-V\fP,\fB --version\fP
 display the version number and exit
 .TP
-\fB-s\fP
+\fB-s\fP,\fB --slave\fP
 turn on the slave mode
 .TP
-\fB-d <device>\fP
+\fB-d <device>\fP,\fB --device <device>\fP
 select the audio device
 .TP
-\fB-n\fP
+\fB-n\fP,\fB --noscan\fP
 turn off the device autodetection.
 .SH COMMANDS
 Note that certain commands (\fBquit\fP, \fBdevice\fP) are useful in the slave
@@ -70,7 +70,8 @@ specifies the device to use
 \fBvolume\fP
 with no argument prints out the current volume setting; if a numeric argument
 is present the volume is adjusted to the value; if the number is prepened with
-\fB+\fP or \fB-\fP the change is relative to the current setting
+\fB+\fP or \fB-\fP the change is relative to the current setting. Doesn't have
+to work with all drives. In fact it rarely does something.
 .TP
 \fBquit\fP
 quits the application.
@@ -83,4 +84,4 @@ quits the application.
 .BR eject (1),
 
 .SH AUTHORS
-Tomas Smetana <t.smetana@gmail.com>.
+Tomas Smetana <tsmetana@users.sourceforge.net>.

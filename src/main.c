@@ -1,3 +1,23 @@
+/*
+ * Maja's CD Player
+ * Copyright (C) 2008-2009 Tomas Smetana
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA  02110-1301  USA
+ */
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -88,7 +108,7 @@ static int msg(msg_severity_t severity, char *format, ...)
 	return ret;
 }
 
-inline void free_list(char ***list, int len)
+void free_list(char ***list, int len)
 {
 	int i;
 
@@ -226,7 +246,6 @@ int main(int argc, char **argv)
 	int tracklist = -1;
 	static struct option options[] = {
 		{"help", 0, 0, 'h'},
-		{"verbose", 0, 0, 'v'},
 		{"version", 0, 0, 'V'},
 		{"device", 1, 0, 'd'},
 		{"noscan", 0, 0, 'n'},
@@ -241,7 +260,6 @@ int main(int argc, char **argv)
 	char *tmp_device = NULL;
 	char **device_list = NULL;
 	int num_devices = 0;
-	unsigned short verbose = 0;
 	unsigned short slave = 0;
 	int arg_val;
 	int noscan = 0;
@@ -255,10 +273,6 @@ int main(int argc, char **argv)
 			case 'h':
 				msg(MSG_STD, "help not implemented yet... sorry\n");
 				exit(0);
-				break;
-			case 'v':
-				msg(MSG_STD, "verbose\n");
-				verbose = 1;
 				break;
 			case 'V':
 				msg(MSG_STD, "Maja's CD player, version " VERSION "\n");
@@ -526,44 +540,49 @@ int main(int argc, char **argv)
 				if (!is_error)
 					is_error =
 						(dev_get_track_time(trk, &st_min, &st_sec, NULL, NULL) < 0);
-				if (!is_error) {
+				if (is_error) {
+					msg(MSG_ERR, "Error querying current position\n");
+					break;
+				}
+				if (!slave && ++optind < argc)
+					cmd_ptr = argv[optind];
+				else {
 					cmd_ptr = &(cmd_str[4]);
 					while (*cmd_ptr == ' ')
 						cmd_ptr++;
-					/* Current position from beginning of the CD in seconds */
-					arg_val = (int)((min + st_min) * 60 + st_sec + sec);
-					switch (*cmd_ptr) {
-						case '+':
-							cmd_ptr++;
-							arg_val += atoi(cmd_ptr);
-							break;
-						case '-':
-							cmd_ptr++;
-							arg_val -= atoi(cmd_ptr);
-							break;
-						case '0':
-						case '1':
-						case '2':
-						case '3':
-						case '4':
-						case '5':
-						case '6':
-						case '7':
-						case '8':
-						case '9':
-							arg_val = atoi(cmd_ptr);
-							break;
-						default:
-							arg_val = -1;
-							break;
-					}
-					msg(MSG_STD, "Seeking to: %d\n", arg_val);
-					if (dev_seek(arg_val) < 0) {
-						msg(MSG_ERR, "Error seeking to %d sec\n", arg_val);
-						is_error = TRUE;
-					}
-				} else
-					msg(MSG_ERR, "Error querying current position\n");
+				}
+				/* Current position from beginning of the CD in seconds */
+				arg_val = (int)((min + st_min) * 60 + st_sec + sec);
+				switch (*cmd_ptr) {
+					case '+':
+						cmd_ptr++;
+						arg_val += atoi(cmd_ptr);
+						break;
+					case '-':
+						cmd_ptr++;
+						arg_val -= atoi(cmd_ptr);
+						break;
+					case '0':
+					case '1':
+					case '2':
+					case '3':
+					case '4':
+					case '5':
+					case '6':
+					case '7':
+					case '8':
+					case '9':
+						arg_val = atoi(cmd_ptr);
+						break;
+					default:
+						arg_val = -1;
+						break;
+				}
+				msg(MSG_STD, "Seeking to: %d\n", arg_val);
+				if (dev_seek(arg_val) < 0) {
+					msg(MSG_ERR, "Error seeking to %d sec\n", arg_val);
+					is_error = TRUE;
+				}
 				break;
 			}
 			case CMD_QUIT:
