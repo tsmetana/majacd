@@ -1,7 +1,3 @@
-dnl Written by Tomas Smetana, 28th October 2004
-dnl Last modified: never
-dnl Process this file with autoconf to produce a configure script.
-
 AC_INIT(majacd,0.1,,)
 AC_PREREQ(2.57)
 AC_CONFIG_HEADERS(config.h)

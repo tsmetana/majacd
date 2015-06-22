@@ -13,8 +13,6 @@ BuildRequires: kernel-headers
 Maja's CD player is a simple audio CD player. It can't play digitally so you
 have to have your CD drive connected to the soundcard.
 
-It comes with GTK+ frontend.
-
 %package gui
 Summary: A GTK+ GUI for the majacd application
 Group: Applications/Multimedia
@@ -22,7 +20,7 @@ BuildRequires: gtk2-devel
 Requires: %{name} = %{version}-%{release}
 
 %description gui
-A GTK+ GUI for the majacd application.
+An optional GTK+ GUI for the majacd application.
 
 %prep
 %setup -q
